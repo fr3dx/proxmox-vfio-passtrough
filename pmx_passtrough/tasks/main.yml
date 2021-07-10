@@ -1,0 +1,80 @@
+---
+# tasks file for pmx_passtrough
+
+- name: Remove pve-enterprise repo
+  ansible.builtin.lineinfile:
+    path: "{{ proxmox_ent_repo_path }}/pve-enterprise.list"
+    regexp: '^deb {{ proxmox_ent_repo }} bullseye pve-enterprise'
+    line: '# deb {{ proxmox_ent_repo }} bullseye pve-enterprise'
+
+- name: Set pve-no-subscription repo
+  ansible.builtin.lineinfile:
+    path: "{{ proxmox_repo_path }}/sources.list"
+    regexp: '^# deb {{ proxmox_no_sub_repo }} bullseye pve-no-subscription'
+    line: 'deb {{ proxmox_no_sub_repo }} bullseye pve-no-subscription'
+
+- name: Update packages and upgrade
+  ansible.builtin.shell: >
+    apt update && apt full-upgrade -y && pveam update
+
+- name: Create blacklist.conf and set its permission
+  ansible.builtin.file:
+    path: "{{ blacklist_conf_path }}/blacklist.conf"
+    state: touch
+    mode: "{{ default_perm }}"
+    modification_time: preserve
+    access_time: preserve
+
+- name: Create ignore_msrs.conf and set its permission
+  ansible.builtin.file:
+    path: "{{ ignore_msrs_conf_path }}/ignore_msrs.conf"
+    state: touch
+    mode: "{{ default_perm }}"
+    modification_time: preserve
+    access_time: preserve
+
+- name: Set modules
+  blockinfile:
+    path: "{{ module_path }}"
+    block: |
+      vfio
+      vfio_iommu_type1
+      vfio_pci
+      vfio_virqfd
+  register: modules_result
+
+- name: Set blacklist.conf
+  blockinfile:
+    path: "{{ blacklist_conf_path }}/blacklist.conf"
+    block: |
+      blacklist radeon
+      blacklist nouveau
+      blacklist nvidia
+
+- name: Set blacklist.conf
+  blockinfile:
+    path: "{{ ignore_msrs_conf_path }}/ignore_msrs.conf"
+    block: |
+      options kvm ignore_msrs=1
+
+- name: Update initramfs
+  ansible.builtin.shell: >
+    update-initramfs -u -k all
+  when: modules_result.changed
+
+- name: Set grub.conf
+  ansible.builtin.lineinfile:
+    path: "{{ grub_path }}/grub"
+    regexp: '^GRUB_CMDLINE_LINUX=""'
+    line: 'GRUB_CMDLINE_LINUX="quiet intel_iommu=on hugepagesz=1G default_hugepagesz=2M iommu=pt pcie_acs_override=downstream multifunction vfio_iommu_type1.allow_unsafe_interrupts=1 vfio-pci.ids=10de:1f82,10de:10fa,10de:1040,10de:0e08,1033:0194,1b21:2142,8086:a2af disable_vga=1 nofb nomodeset video=efifb:off"'
+  register: grub_result
+
+- name: Update initramfs
+  ansible.builtin.shell: >
+    update-initramfs -u -k all
+  when: grub_result.changed
+
+- name: Check 101 VM config is exists
+  stat:
+    path: "{{ vm_path }}/101.conf"
+  register: vm_conf

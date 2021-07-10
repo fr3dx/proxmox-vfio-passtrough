@@ -1,0 +1,6 @@
+all:
+  children:
+    pmx:
+      hosts:
+        192.168.1.11:
+

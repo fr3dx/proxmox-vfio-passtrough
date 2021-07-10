@@ -1,0 +1,13 @@
+---
+# defaults file for pmx_passtrough
+
+proxmox_ent_repo: https://enterprise.proxmox.com/debian/pve
+proxmox_ent_repo_path: /etc/apt/sources.list.d
+proxmox_no_sub_repo: http://download.proxmox.com/debian/pve
+proxmox_repo_path: /etc/apt
+blacklist_conf_path: /etc/modprobe.d
+ignore_msrs_conf_path: /etc/modprobe.d
+grub_path: /etc/default
+vm_path: /etc/pve/qemu-server
+module_path: /etc/modules
+default_perm: 0644
