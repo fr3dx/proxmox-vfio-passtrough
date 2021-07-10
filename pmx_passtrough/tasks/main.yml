@@ -78,3 +78,14 @@
   stat:
     path: "{{ vm_path }}/101.conf"
   register: vm_conf
+
+- name: Make backup from proxmoxlib.js
+  ansible.builtin.copy:
+    src: "{{ proxmox_widget_workdir }}/proxmoxlib.js"
+    dest: "{{ proxmox_widget_workdir }}/proxmoxlib.js.bak"
+    remote_src: yes
+
+- name: Remove No valid sub popup
+  ansible.builtin.shell: >
+    sed -Ezi.bak "s/(Ext.Msg.show\(\{\s+title: gettext\('No valid sub)/void\(\{ \/\/\1/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+  register: pmxlib_result

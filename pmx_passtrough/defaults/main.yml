@@ -11,3 +11,4 @@ grub_path: /etc/default
 vm_path: /etc/pve/qemu-server
 module_path: /etc/modules
 default_perm: 0644
+proxmox_widget_workdir: /usr/share/javascript/proxmox-widget-toolkit
