@@ -1,0 +1,13 @@
+---
+# tasks file for set grub.conf
+- name: Set grub.conf
+  ansible.builtin.lineinfile:
+    path: "{{ grub_path }}/grub"
+    regexp: '^GRUB_CMDLINE_LINUX=""'
+    line: 'GRUB_CMDLINE_LINUX="quiet intel_iommu=on hugepagesz=1G default_hugepagesz=2M iommu=pt pcie_acs_override=downstream multifunction vfio_iommu_type1.allow_unsafe_interrupts=1 vfio-pci.ids=10de:1f82,10de:10fa,10de:1040,10de:0e08,1033:0194,1b21:2142,8086:a2af disable_vga=1 nofb nomodeset video=efifb:off"'
+  register: grub_result
+
+- name: Update initramfs
+  ansible.builtin.shell: >
+    update-initramfs -u -k all
+  when: grub_result.changed

@@ -1,0 +1,3 @@
+---
+# proxmox widget workdir, webui subscription popup
+proxmox_widget_workdir: /usr/share/javascript/proxmox-widget-toolkit

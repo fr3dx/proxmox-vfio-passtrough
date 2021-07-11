@@ -1,0 +1,17 @@
+---
+# tasks file for remove enterprise repo
+- name: Remove pve-enterprise repo
+  ansible.builtin.lineinfile:
+    path: "{{ proxmox_ent_repo_path }}/pve-enterprise.list"
+    regexp: '^deb {{ proxmox_ent_repo }} bullseye pve-enterprise'
+    line: '# deb {{ proxmox_ent_repo }} bullseye pve-enterprise'
+
+- name: Set pve-no-subscription repo
+  ansible.builtin.lineinfile:
+    path: "{{ proxmox_repo_path }}/sources.list"
+    regexp: '^# deb {{ proxmox_no_sub_repo }} bullseye pve-no-subscription'
+    line: 'deb {{ proxmox_no_sub_repo }} bullseye pve-no-subscription'
+
+- name: Update packages and upgrade
+  ansible.builtin.shell: >
+    apt update && apt full-upgrade -y && pveam update

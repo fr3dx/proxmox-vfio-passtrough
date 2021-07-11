@@ -1,0 +1,15 @@
+---
+# tasks file for ignore msrs.conf
+- name: Create ignore_msrs.conf and set its permission
+  ansible.builtin.file:
+    path: "{{ ignore_msrs_conf_path }}/ignore_msrs.conf"
+    state: touch
+    mode: "{{ default_perm }}"
+    modification_time: preserve
+    access_time: preserve
+
+- name: Set ignore_msrs.conf
+  blockinfile:
+    path: "{{ ignore_msrs_conf_path }}/ignore_msrs.conf"
+    block: |
+      options kvm ignore_msrs=1

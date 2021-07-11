@@ -1,0 +1,3 @@
+---
+# blacklist config path variable
+blacklist_conf_path: /etc/modprobe.d

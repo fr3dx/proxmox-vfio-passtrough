@@ -1,0 +1,24 @@
+---
+# tasks file for remove subscription popup window
+- name: Check proxmoxlib.js.bak is exists
+  stat:
+    path: "{{ proxmox_widget_workdir }}/proxmoxlib.js.bak"
+  register: pmx_js_bak
+
+- name: Make backup from proxmoxlib.js
+  ansible.builtin.copy:
+    src: "{{ proxmox_widget_workdir }}/proxmoxlib.js"
+    dest: "{{ proxmox_widget_workdir }}/proxmoxlib.js.bak"
+    remote_src: yes
+  register: proxmoxlib_backup_state
+  when: pmx_js_bak.stat.exists == False
+
+- name: Remove No valid sub popup
+  ansible.builtin.shell: >
+    sed -Ezi.bak "s/(Ext.Msg.show\(\{\s+title: gettext\('No valid sub)/void\(\{ \/\/\1/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+  args: 
+    warn: false 
+  when: proxmoxlib_backup_state.changed
+
+
+    

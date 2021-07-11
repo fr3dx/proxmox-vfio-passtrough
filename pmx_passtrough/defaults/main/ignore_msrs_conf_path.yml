@@ -1,0 +1,3 @@
+---
+# ignore msrs config path variable
+ignore_msrs_conf_path: /etc/modprobe.d

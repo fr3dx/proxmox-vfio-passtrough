@@ -1,0 +1,17 @@
+---
+# tasks file for blacklist.conf
+- name: Create blacklist.conf and set its permission
+  ansible.builtin.file:
+    path: "{{ blacklist_conf_path }}/blacklist.conf"
+    state: touch
+    mode: "{{ default_perm }}"
+    modification_time: preserve
+    access_time: preserve
+
+- name: Set blacklist.conf
+  blockinfile:
+    path: "{{ blacklist_conf_path }}/blacklist.conf"
+    block: |
+      blacklist radeon
+      blacklist nouveau
+      blacklist nvidia
