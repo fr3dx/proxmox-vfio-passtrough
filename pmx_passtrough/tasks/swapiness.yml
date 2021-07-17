@@ -1,0 +1,15 @@
+---
+# tasks file for set swapiness for 0
+- name: Create swapiness.conf and set its permission
+  ansible.builtin.file:
+    path: "{{ swapiness_path }}/swappiness.conf"
+    state: touch
+    mode: "{{ default_perm }}"
+    modification_time: preserve
+    access_time: preserve
+
+- name: Set swapiness.conf
+  blockinfile:
+    path: "{{ swapiness_path }}/swappiness.conf"
+    block: |
+      vm.swappiness = 0

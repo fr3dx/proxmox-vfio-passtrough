@@ -1,0 +1,5 @@
+---
+# defaults file for pmx_tailscale
+tailscale_repo_conf_path: /etc/apt/sources.list.d
+tailscale_repo_link: https://pkgs.tailscale.com/stable/debian
+tailscape_repo_key_link: https://pkgs.tailscale.com/stable/debian/bullseye

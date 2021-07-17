@@ -1,0 +1,16 @@
+---
+# tasks file for pmx_zfs
+- name: Create zfs.conf and set its permission
+  ansible.builtin.file:
+    path: "{{ zfs_conf_path }}/zfs.conf"
+    state: touch
+    mode: "{{ default_perm }}"
+    modification_time: preserve
+    access_time: preserve
+
+- name: Set zfs Arc
+  blockinfile:
+    path: "{{ zfs_conf_path }}/zfs.conf"
+    block: |
+      options zfs zfs_arc_max=1073741824 
+      options zfs zfs_arc_min=536870912 

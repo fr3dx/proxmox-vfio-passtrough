@@ -1,0 +1,4 @@
+---
+# defaults file for pmx_zfs
+default_perm: 0644
+zfs_conf_path: /etc/modprobe.d

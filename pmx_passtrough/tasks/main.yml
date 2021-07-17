@@ -6,6 +6,7 @@
 - include: remove_subs_pop.yml
 - include: grub_conf.yml
 - include: vfio_conf.yml
+- include: swapiness.yml
 
 - name: Check 101 VM config is exists
   stat:

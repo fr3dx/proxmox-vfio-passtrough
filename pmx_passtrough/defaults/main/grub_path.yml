@@ -1,3 +1,0 @@
----
-# grub config path variable
-grub_path: /etc/default

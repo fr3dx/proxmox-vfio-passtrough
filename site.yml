@@ -8,3 +8,4 @@
  
   roles:
     - pmx_passtrough
+    - pmx_tailscale
