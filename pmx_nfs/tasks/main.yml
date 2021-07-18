@@ -1,0 +1,17 @@
+---
+# tasks file for pmx_nfs
+- name: Update cache if the last one is more than 3600 seconds ago
+  apt:
+    name: nfs-kernel-server
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Set export for NFS
+  blockinfile:
+    path: "{{ exports_path }}/exports"
+    block: |
+      {{ nfs_share_path }} {{ nfs_enabled_ips }}{{ nfs_share_settings }}
+
+- name: Apply NFS share settings
+  ansible.builtin.shell: >
+    exportfs -vra
