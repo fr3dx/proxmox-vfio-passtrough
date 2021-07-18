@@ -1,2 +1,6 @@
 ---
 # handlers file for pmx_passtrough
+- name: restart_pveproxy
+  ansible.builtin.service:
+    name: pveproxy
+    state: restarted

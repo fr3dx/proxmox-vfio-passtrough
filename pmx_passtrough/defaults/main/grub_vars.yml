@@ -1,0 +1,10 @@
+---
+# grub variables
+nv_vga_controller: 10de:1f82
+nv_audio_device: 10de:10fa
+disable_vga: disable_vga=1
+nec_usb_controller_pci: 1033:0194
+asmedia_usb_controller_mb: 1b21:2142
+intel_usb_controller_mb: 8086:a2af
+grub_cmdline_settings_part1: "quiet intel_iommu=on hugepagesz=1G default_hugepagesz=2M iommu=pt pcie_acs_override=downstream multifunction vfio_iommu_type1.allow_unsafe_interrupts=1"
+grub_cmdline_settings_part2: "nofb nomodeset video=efifb:off"

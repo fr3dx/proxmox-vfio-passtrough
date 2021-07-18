@@ -19,6 +19,7 @@
   args: 
     warn: false 
   when: proxmoxlib_backup_state.changed
+  notify: restart_pveproxy
 
 
     
