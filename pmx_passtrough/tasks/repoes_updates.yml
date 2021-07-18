@@ -12,6 +12,15 @@
     regexp: '^# deb {{ proxmox_no_sub_repo }} bullseye pve-no-subscription'
     line: 'deb {{ proxmox_no_sub_repo }} bullseye pve-no-subscription'
 
-- name: Update packages and upgrade
+- name: Update cache if the last one is more than 3600 seconds ago
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Upgrade Proxmox VE
+  apt:
+    upgrade: dist
+
+- name: Update LXC template repo
   ansible.builtin.shell: >
-    apt update && apt full-upgrade -y && pveam update
+    pveam update

@@ -9,3 +9,4 @@
   roles:
     - pmx_passtrough
     - pmx_tailscale
+    - pmx_zfs

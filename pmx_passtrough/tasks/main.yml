@@ -1,12 +1,12 @@
 ---
 # tasks file for pmx_passtrough
+- include: repoes_updates.yml
+- include: grub_conf.yml
 - include: blacklist_conf.yml
 - include: ignore_msrs_conf.yml
-- include: repoes_updates.yml
-- include: remove_subs_pop.yml
-- include: grub_conf.yml
 - include: vfio_conf.yml
 - include: swapiness.yml
+- include: remove_subs_pop.yml
 
 - name: Check 101 VM config is exists
   stat:

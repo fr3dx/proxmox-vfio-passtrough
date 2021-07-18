@@ -8,7 +8,7 @@
     modification_time: preserve
     access_time: preserve
 
-- name: Set zfs Arc
+- name: Set zfs Arc min 512M max 1G 
   blockinfile:
     path: "{{ zfs_conf_path }}/zfs.conf"
     block: |
