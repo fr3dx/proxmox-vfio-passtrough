@@ -1,2 +1,23 @@
 ---
-# tasks file for set zfs shares
+# tasks file for set nfs and samba shares on the dataset
+- name: Check nfs share on {{ zfs_dataset_nas }}
+  ansible.builtin.shell: >
+    zfs get sharenfs "{{ zfs_dataset_nas }}"
+  register: get_nfs_share
+  changed_when: "'zfs01/NAS  sharenfs  off       default' in get_nfs_share.stdout_lines or 'zfs01/NAS  sharenfs  off       local' in get_nfs_share.stdout_lines"
+
+- name: Set nfs share on {{ zfs_dataset_nas }}
+  ansible.builtin.shell: >
+    zfs set sharenfs=on "{{ zfs_dataset_nas }}"
+  when: "'zfs01/NAS  sharenfs  off       default' in get_nfs_share.stdout_lines or 'zfs01/NAS  sharenfs  off       local' in get_nfs_share.stdout_lines"
+
+- name: Check smb share on {{ zfs_dataset_nas }}
+  ansible.builtin.shell: >
+    zfs get sharesmb "{{ zfs_dataset_nas }}"
+  register: get_smb_share
+  changed_when: "'zfs01/NAS  sharesmb  off       default' in get_smb_share.stdout_lines or 'zfs01/NAS  sharesmb  off       local' in get_smb_share.stdout_lines"
+
+- name: Set smb share on {{ zfs_dataset_nas }}
+  ansible.builtin.shell: >
+    zfs set sharesmb=on "{{ zfs_dataset_nas }}"
+  when: "'zfs01/NAS  sharesmb  off       default' in get_smb_share.stdout_lines or 'zfs01/NAS  sharesmb  off       local' in get_smb_share.stdout_lines"

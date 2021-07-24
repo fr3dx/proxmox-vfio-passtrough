@@ -13,6 +13,12 @@
   register: smb_backup_state
   when: smb_conf_bak.stat.exists == False
 
+- name: Disable samba logging
+  ansible.builtin.lineinfile:
+    path: "{{ smb_conf_path }}/smb.conf"
+    regexp: '^   log file = /var/log/samba/log.%m'
+    line: '   log file = /var/log/samba/%m.log'
+
 - name: Replace Share Definitions [home]
   ansible.builtin.replace:
     path: "{{ smb_conf_path }}/smb.conf"

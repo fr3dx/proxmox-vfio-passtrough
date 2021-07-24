@@ -3,3 +3,4 @@
 default_perm: 0644
 zfs_conf_path: /etc/modprobe.d
 zfs_pool_01: zfs01
+zfs_dataset_nas: zfs01/NAS
