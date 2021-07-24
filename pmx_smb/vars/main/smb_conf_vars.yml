@@ -1,0 +1,5 @@
+---
+# smb conf variables
+nas: /zfs01/NAS
+vdx: /zfs01/vdx
+allowed_hosts: 192.168.1.31

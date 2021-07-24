@@ -1,0 +1,6 @@
+---
+# handlers file for pmx_smb
+- name: restart_smbd
+  ansible.builtin.service:
+    name: smbd
+    state: restarted

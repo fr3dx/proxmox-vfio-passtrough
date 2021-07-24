@@ -1,6 +1,6 @@
 ---
 # tasks file for install nfs kernel server
-- name: Update cache if the last one is more than 3600 seconds ago
+- name: Install nfs kernel server
   apt:
     name: nfs-kernel-server
     update_cache: yes

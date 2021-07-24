@@ -2,4 +2,4 @@
 # tasks file for pmx_zfs
 - include: set_zfs_arc.yml
 - include: import_zfs_pool.yml
-
+- include: set_zfs_shares.yml

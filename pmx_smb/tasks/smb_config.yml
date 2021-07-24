@@ -1,0 +1,63 @@
+---
+# tasks file for smb.conf
+- name: Check smb.conf.bak is exists
+  stat:
+    path: "{{ smb_conf_path }}/smb.conf.bak"
+  register: smb_conf_bak
+
+- name: Make backup from smb.conf
+  ansible.builtin.copy:
+    src: "{{ smb_conf_path }}/smb.conf"
+    dest: "{{ smb_conf_path }}/smb.conf.bak"
+    remote_src: yes
+  register: smb_backup_state
+  when: smb_conf_bak.stat.exists == False
+
+- name: Replace Share Definitions [home]
+  ansible.builtin.replace:
+    path: "{{ smb_conf_path }}/smb.conf"
+    after: '#======================= Share Definitions ======================='
+    before: '# By default, the home directories are exported read-only. Change the'
+    regexp: '^(.+)$'
+    replace: ';\1'
+  when: smb_backup_state.changed
+
+- name: Replace Share Definitions [printers]
+  ansible.builtin.replace:
+    path: "{{ smb_conf_path }}/smb.conf"
+    after: ';   directory mask = 0700'
+    before: '# Windows clients look for this share name as a source of downloadable'
+    regexp: '^(.+)$'
+    replace: ';\1'
+  when: smb_backup_state.changed
+
+- name: Replace Share Definitions [print$]
+  ansible.builtin.replace:
+    path: "{{ smb_conf_path }}/smb.conf"
+    after: '# printer drivers'
+    before: '# Uncomment to allow remote administration of Windows print drivers.'
+    regexp: '^(.+)$'
+    replace: ';\1'
+  when: smb_backup_state.changed
+
+- name: Set allowed hosts and shares
+  blockinfile:
+    path: "{{ smb_conf_path }}/smb.conf"
+    block: |
+      allow hosts = {{ allowed_hosts }}
+
+      [NAS]
+      comment = nas share
+      browseable = yes
+      path = {{ nas }}
+      guest ok = no
+      read only = no
+
+      [vdx]
+      comment = vdx share
+      browseable = yes
+      path = {{ vdx }}
+      guest ok = no
+      read only = no
+  when: smb_backup_state.changed
+  notify: restart_smbd

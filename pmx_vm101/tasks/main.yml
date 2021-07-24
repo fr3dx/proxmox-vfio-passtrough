@@ -1,2 +1,6 @@
 ---
 # tasks file for pmx_vm101
+- name: Check 101 VM config is exists
+  stat:
+    path: "{{ vm_path }}/101.conf"
+  register: vm_conf

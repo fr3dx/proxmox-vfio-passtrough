@@ -1,0 +1,3 @@
+---
+# config paths variables
+smb_conf_path: /etc/samba

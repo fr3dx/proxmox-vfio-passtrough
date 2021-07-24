@@ -1,0 +1,5 @@
+---
+# vars file for pmx_smb
+#- include: install_smb.yml
+- include: create_smb_user.yml
+- include: smb_config.yml
