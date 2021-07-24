@@ -1,0 +1,7 @@
+---
+# tasks file for install tailscale
+- name: Install tailscale
+  ansible.builtin.apt: 
+    name: tailscale
+    state: present
+    update_cache: yes

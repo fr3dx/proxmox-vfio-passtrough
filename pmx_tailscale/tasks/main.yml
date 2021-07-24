@@ -1,24 +1,4 @@
 ---
 # tasks file for pmx_tailscale
-- name: Check tailscale.list is exists
-  stat:
-    path: "{{ tailscale_repo_conf_path }}/tailscale.list"
-  register: pmx_ts_repo
-
-- name: Add an Apt signing key, uses whichever key is at the URL
-  ansible.builtin.apt_key:
-    url: "{{ tailscape_repo_key_link }}.gpg"
-    state: present
-
-- name: Add tailscale repo
-  ansible.builtin.lineinfile:
-    path: "{{ tailscale_repo_conf_path }}/tailscale.list"
-    line: "deb {{ tailscale_repo_link }} bullseye main"
-    create: yes
-  when: pmx_ts_repo.stat.exists == False
-
-- name: Add repo and import gpg key
-  ansible.builtin.apt: 
-    name: tailscale
-    state: present
-    update_cache: yes
+- include: tailscale_repo.yml
+- include: install_tailscale.yml

@@ -1,0 +1,11 @@
+---
+# tasks file for import zfs pool
+- name: Check {{ zfs_pool_01 }} pool is mounted
+  ansible.builtin.shell: >
+    zpool status
+  register: zfs_pool_status
+
+- name: Import {{ zfs_pool_01 }} pool
+  ansible.builtin.shell: >
+    zpool import "{{ zfs_pool_01 }}"
+  when: "'no pools available' in zfs_pool_status.stderr_lines"

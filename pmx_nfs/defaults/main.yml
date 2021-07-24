@@ -1,6 +1,0 @@
----
-# nfs share variables
-exports_path: /etc
-nfs_share_path: /zfs01/NAS
-nfs_enabled_ips: "192.168.1.*"
-nfs_share_settings: "(rw,sync,no_subtree_check)"

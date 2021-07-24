@@ -1,27 +1,5 @@
 ---
 # tasks file for pmx_zfs
-- name: Create zfs.conf and set its permission
-  ansible.builtin.file:
-    path: "{{ zfs_conf_path }}/zfs.conf"
-    state: touch
-    mode: "{{ default_perm }}"
-    modification_time: preserve
-    access_time: preserve
-
-- name: Set zfs Arc min 512M max 1G 
-  blockinfile:
-    path: "{{ zfs_conf_path }}/zfs.conf"
-    block: |
-      options zfs zfs_arc_max=1073741824 
-      options zfs zfs_arc_min=536870912 
-
-- name: Check {{ zfs_pool_01 }} pool is mounted
-  ansible.builtin.shell: >
-    zpool status
-  register: zfs_pool_status
-
-- name: Import {{ zfs_pool_01 }} pool
-  ansible.builtin.shell: >
-    zpool import "{{ zfs_pool_01 }}"
-  when: "'no pools available' in zfs_pool_status.stderr_lines"
+- include: set_zfs_arc.yml
+- include: import_zfs_pool.yml
 

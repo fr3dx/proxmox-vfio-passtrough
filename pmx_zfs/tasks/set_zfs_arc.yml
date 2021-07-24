@@ -1,0 +1,16 @@
+---
+# tasks file for set zfs arc
+- name: Create zfs.conf and set its permission
+  ansible.builtin.file:
+    path: "{{ zfs_conf_path }}/zfs.conf"
+    state: touch
+    mode: "{{ default_perm }}"
+    modification_time: preserve
+    access_time: preserve
+
+- name: Set zfs Arc min 512M max 1G 
+  blockinfile:
+    path: "{{ zfs_conf_path }}/zfs.conf"
+    block: |
+      options zfs zfs_arc_max=1073741824 
+      options zfs zfs_arc_min=536870912 

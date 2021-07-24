@@ -1,0 +1,11 @@
+---
+# tasks file for export nfs settings and apply it
+- name: Set export for NFS
+  blockinfile:
+    path: "{{ exports_path }}/exports"
+    block: |
+      {{ nfs_share_path }} {{ nfs_enabled_ips }}{{ nfs_share_settings }}
+
+- name: Apply NFS share settings
+  ansible.builtin.shell: >
+    exportfs -vra
