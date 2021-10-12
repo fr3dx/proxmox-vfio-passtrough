@@ -3,3 +3,4 @@
 - include: install_smb.yml
 - include: create_smb_user.yml
 - include: smb_config.yml
+- include: smb_logging.yml

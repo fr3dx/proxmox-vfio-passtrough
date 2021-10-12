@@ -1,0 +1,45 @@
+---
+# tasks file for proxmox storage.cfg
+
+- name: Check storage.cfg.bak is exists
+  stat:
+    path: "{{ storage_conf_path }}/storage.cfg.bak"
+  register: storage_conf_bak
+
+- name: Make backup from storage.cfg
+  ansible.builtin.copy:
+    src: "{{ storage_conf_path }}/storage.cfg"
+    dest: "{{ storage_conf_path }}/storage.cfg.bak"
+    remote_src: yes
+  register: storage_backup_state
+  when: storage_conf_bak.stat.exists == False
+
+- name: Set pmx storage
+  blockinfile:
+    path: "{{ storage_conf_path }}/storage.cfg"
+    block: |
+      dir: local
+              disable
+              path /var/lib/vz
+              content backup,iso,vztmpl
+
+      btrfs: local-btrfs
+              path /var/lib/pve/local-btrfs
+              content iso,backup,rootdir,vztmpl,images
+
+      zfspool: STORAGE
+              pool "{{ default_dataset_name }}/storage"
+              content images,rootdir
+              sparse 1
+
+      dir: BACKUP
+              path "{{ default_dataset_name }}/backup"
+              content backup
+              prune-backups keep-last=1
+              shared 0
+
+      dir: ISO
+              path "{{ default_dataset_name }}/ISO"
+              content iso,images,vztmpl
+              prune-backups keep-all=1
+              shared 0

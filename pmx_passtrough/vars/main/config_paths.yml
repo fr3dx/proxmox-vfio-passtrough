@@ -6,3 +6,4 @@ module_path: /etc/modules
 ignore_msrs_conf_path: /etc/modprobe.d
 vm_path: /etc/pve/qemu-server
 swapiness_path: /etc/sysctl.d
+storage_conf_path: /etc/pve/

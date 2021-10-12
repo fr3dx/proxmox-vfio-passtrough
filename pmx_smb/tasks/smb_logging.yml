@@ -1,0 +1,7 @@
+---
+# tasks file for turn off smb logging
+- name: Disable samba logging
+  ansible.builtin.lineinfile:
+    path: "{{ smb_conf_path }}/smb.conf"
+    regexp: '^   log file = /var/log/samba/log.%m'
+    line: '   log file = /var/log/samba/%m.log'
